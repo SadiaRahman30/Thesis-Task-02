@@ -6,7 +6,9 @@ import json
 import unittest
 
 try:
-    from app import app
+    from app import app, IrisClassifier
+    if "__main__" in sys.modules:
+        setattr(sys.modules["__main__"], "IrisClassifier", IrisClassifier)
     HAS_FLASK = True
 except ImportError:
     HAS_FLASK = False

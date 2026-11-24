@@ -1,10 +1,31 @@
 import os
+import sys
 import pickle
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "model.pkl")
+
+
+class IrisClassifier:
+    def predict(self, X):
+        preds = []
+        for row in X:
+            petal_length = row[2]
+            petal_width = row[3]
+            if petal_length < 2.5:
+                preds.append(0)
+            elif petal_width < 1.75:
+                preds.append(1)
+            else:
+                preds.append(2)
+        return preds
+
+
+# Ensure unpickler can always find IrisClassifier
+if "__main__" in sys.modules:
+    setattr(sys.modules["__main__"], "IrisClassifier", IrisClassifier)
 
 
 def load_model():
